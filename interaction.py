@@ -38,11 +38,12 @@ def ray_casting_npc_player(npc_x, npc_y, blocked_doors, world_map, player_pos):
 
 
 class Interaction:
-    def __init__(self, player, sprites, drawing):
+    def __init__(self, player, sprites, drawing, score):
         self.player = player
         self.sprites = sprites
         self.drawing = drawing
         self.pain_sound = pygame.mixer.Sound('sound/pain.wav')
+        self.score = score
         # self.font = pygame.font.SysFont('Arial', 36, bold=True)
 
     def interaction_objects(self):
@@ -58,10 +59,14 @@ class Interaction:
                             obj.is_dead = True
                             obj.blocked = None
                             self.drawing.shot_animation_trigger = False
+                            self.increment_score()
                     if (obj.flag == 'door_h' or obj.flag == 'door_v') and obj.distance_to_sprite < TILE:
                         obj.door_open_trigger = True
                         obj.blocked = None
                     break
+
+    def increment_score(self):
+        self.score += 10
 
     def npc_action(self):
         for obj in self.sprites.list_of_objects:
@@ -87,9 +92,9 @@ class Interaction:
 
     def check_win(self):
         if not len([obj for obj in self.sprites.list_of_objects if obj.flag == 'npc' and not obj.is_dead]):
-            pygame.mixer.music.stop()
-            pygame.mixer.music.load('sound/win.mp3')
-            pygame.mixer.music.play()
+            # pygame.mixer.music.stop()
+            # pygame.mixer.music.load('sound/win.mp3')
+            # pygame.mixer.music.play()
             while True:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
@@ -99,5 +104,5 @@ class Interaction:
     def play_music(self):
         pygame.mixer.pre_init(44100, -16, 2, 2048)
         pygame.mixer.init()
-        pygame.mixer.music.load('sound/theme.mp3')
-        pygame.mixer.music.play(10)
+        pygame.mixer.music.load('sound/game.wav')
+        pygame.mixer.music.play(1)

@@ -3,6 +3,7 @@ from sprite_objects import *
 from ray_casting import ray_casting_walls
 from drawing import Drawing
 from interaction import Interaction
+from settings import SCORE
 
 pygame.init()
 sc = pygame.display.set_mode((WIDTH, HEIGHT), pygame.DOUBLEBUF)
@@ -12,7 +13,7 @@ sc_map = pygame.Surface(MAP_RES)
 sprites = Sprites()
 player = Player(sprites)
 drawing = Drawing(sc, sc_map, player, clock)
-interaction = Interaction(player, sprites, drawing)
+interaction = Interaction(player, sprites, drawing, SCORE)
 
 drawing.menu()
 pygame.mouse.set_visible(False)
@@ -25,6 +26,7 @@ while True:
     walls, wall_shot = ray_casting_walls(player, drawing.textures)
     drawing.world(walls + [obj.object_locate(player) for obj in sprites.list_of_objects])
     drawing.fps(clock)
+    drawing.score(interaction.score)
     drawing.mini_map()
     drawing.player_weapon([wall_shot, sprites.sprite_shot])
 
