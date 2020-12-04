@@ -55,8 +55,13 @@ class Drawing:
 
     def fps(self, clock):
         display_fps = str(int(clock.get_fps()))
-        render = self.font.render(display_fps, 0, DARKORANGE)
+        render = self.font.render('FPS: ' + display_fps, 0, DARKORANGE)
         self.sc.blit(render, FPS_POS)
+
+    def score(self, points):
+        display_points = str(points)
+        render = self.font.render('PONTOS: ' + display_points, 0, DARKORANGE)
+        self.sc.blit(render, SCORE_POS)
 
     def win(self):
         render = self.font_win.render('YOU WIN!!!', 1, (randrange(40, 120), 0, 0))
@@ -110,15 +115,15 @@ class Drawing:
 
     def menu(self):
         x = 0
-        pygame.mixer.music.load('sound/win.mp3')
+        pygame.mixer.music.load('sound/menu.wav')
         pygame.mixer.music.play()
         button_font = pygame.font.Font('font/font.ttf', 72)
         label_font = pygame.font.Font('font/font1.otf', 400)
-        start = button_font.render('START', 1, pygame.Color('lightgray'))
-        button_start = pygame.Rect(0, 0, 400, 150)
+        start = button_font.render('Começar', 1, pygame.Color('purple'))
+        button_start = pygame.Rect(0, 0, 400, 100)
         button_start.center = HALF_WIDTH, HALF_HEIGHT
-        exit = button_font.render('EXIT', 1, pygame.Color('lightgray'))
-        button_exit = pygame.Rect(0, 0, 400, 150)
+        exit = button_font.render('Sair', 1, pygame.Color('green'))
+        button_exit = pygame.Rect(0, 0, 400, 100)
         button_exit.center = HALF_WIDTH, HALF_HEIGHT + 200
 
         while self.menu_trigger:
@@ -131,12 +136,12 @@ class Drawing:
             x += 1
 
             pygame.draw.rect(self.sc, BLACK, button_start, border_radius=25, width=10)
-            self.sc.blit(start, (button_start.centerx - 130, button_start.centery - 70))
+            self.sc.blit(start, (button_start.centerx - 170, button_start.centery - 40))
 
             pygame.draw.rect(self.sc, BLACK, button_exit, border_radius=25, width=10)
-            self.sc.blit(exit, (button_exit.centerx - 85, button_exit.centery - 70))
+            self.sc.blit(exit, (button_exit.centerx - 85, button_exit.centery - 40))
 
-            color = randrange(40)
+            color = randrange(50,100)
             label = label_font.render('DOOMPy', 1, (color, color, color))
             self.sc.blit(label, (15, -30))
 
@@ -144,12 +149,12 @@ class Drawing:
             mouse_click = pygame.mouse.get_pressed()
             if button_start.collidepoint(mouse_pos):
                 pygame.draw.rect(self.sc, BLACK, button_start, border_radius=25)
-                self.sc.blit(start, (button_start.centerx - 130, button_start.centery - 70))
+                self.sc.blit(start, (button_start.centerx - 170, button_start.centery - 40))
                 if mouse_click[0]:
                     self.menu_trigger = False
             elif button_exit.collidepoint(mouse_pos):
                 pygame.draw.rect(self.sc, BLACK, button_exit, border_radius=25)
-                self.sc.blit(exit, (button_exit.centerx - 85, button_exit.centery - 70))
+                self.sc.blit(exit, (button_exit.centerx - 85, button_exit.centery - 40))
                 if mouse_click[0]:
                     pygame.quit()
                     sys.exit()
